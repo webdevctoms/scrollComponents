@@ -1,15 +1,17 @@
-function ScrollComponent(scrollComponentClass,leftArrowClass,rightArrowClass,dropdownRef){
+function ScrollComponent(scrollComponentClass,leftArrowClass,rightArrowClass,dropdownRef,arrowClass){
 	this.scrollComponents = document.getElementsByClassName(scrollComponentClass);
-	this.plusButtons = document.getElementsByClassName(leftArrowClass);
-	this.minusButtons = document.getElementsByClassName(rightArrowClass);
+	this.leftArrows = document.getElementsByClassName(leftArrowClass);
+	this.rightArrows = document.getElementsByClassName(rightArrowClass);
+	this.arrows = document.getElementsByClassName(arrowClass);
 	//reference to the previously created dropdown object 
 	this.dropdown = dropdownRef;
 	this.scrollArray = [];
 	this.activeItemIndexesArray = [];
-	console.log(this.scrollComponents,this.plusButtons,this.minusButtons);
+	console.log(this.scrollComponents,this.leftArrows);
 	this.initScrollArray(3);
 	console.log(this.scrollArray,this.activeItemIndexesArray);
 	this.initViewHeights();
+	this.initWindowListener();
 
 }
 
@@ -51,5 +53,31 @@ ScrollComponent.prototype.initViewHeights = function(){
 		newHeight += maxHeight;
 	}
 	console.log(newHeight);
+	this.adjustArrows();
 	this.dropdown.windowResized();
+}
+
+ScrollComponent.prototype.adjustArrows = function(){
+	for(var i =0; i < this.scrollComponents.length; i++){
+		console.log(this.scrollComponents[i].style.height);
+		var numHeight = parseInt(this.scrollComponents[i].style.height.replace("px",""))
+		var halfHeight = numHeight / 2;
+		this.leftArrows[i].style.top = halfHeight + "px";
+		this.rightArrows[i].style.top = halfHeight + "px";
+	}
+}
+
+ScrollComponent.prototype.initWindowListener = function(){
+	window.addEventListener('resize',function(e){
+		this.windowResized(e);
+	}.bind(this),false);
+}
+//need to find active slide then resize based off that size
+ScrollComponent.prototype.windowResized = function(event){
+	console.log("test");
+	this.dropdown.windowResized();
+}
+//will need to resize the scroll "view" when changing elements
+ScrollComponent.prototype.resizeScrollView = function(){
+
 }
