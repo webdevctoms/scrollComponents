@@ -31,7 +31,7 @@ kitBuilder.prototype.getHeights = function(isOpen){
 			this.bundleContentElements[i].style.height = "0px";
 		}			
 	}
-
+	console.log(heights);
 	return heights;
 }
 //this method grabs the buttons from the site using the button id passed in the initializer
@@ -212,6 +212,7 @@ kitBuilder.prototype.buttonClicked = function(event){
 function initKit(){
 	var kit1 = new kitBuilder("bundle-container1",["bundle-button1","bundle-button2","bundle-button3","bundle-button4"],"bundle-selector-content","plusIcon","minusIcon");
 	//initialize scroll here?
+	var scroll1 = new ScrollComponent("scrollComponents","scrollArrowLeft","scrollArrowRight",kit1);
 }
 
 window.onload = initKit;
