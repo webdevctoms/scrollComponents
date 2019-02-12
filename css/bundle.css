@@ -1,0 +1,177 @@
+body {
+  margin: 0;
+}
+/*container styles doesn't really do much except for the relative positioning allows the image icon to use the container for positioning,since the image is absolute*/
+.bundle-container{
+	position: relative;
+	width: 50%;
+	margin: auto;
+}
+/*button styles*/
+.bundle-button{
+	padding-bottom: 5px;
+	border-bottom: 1px solid #0c0c0d;
+}
+
+.bundle-button p{
+	display: inline;
+}
+
+.bundle-button:hover{
+	cursor: pointer;
+}
+/*icon styles absolute positioning used to position it to the far right og container*/
+.arrowIcon{
+	display: inline-block;
+	width: 15px;
+	height: 18px;
+	transform: rotate(0deg);
+	transition: 500ms;
+	-webkit-transition: 500ms;
+	-moz-transition: 500ms;
+	-o-transition: 500ms;
+	position: absolute;
+	right: 0px;
+}
+/*selector styles these style the dropdown portion of the content*/
+
+.bundle-selector-content{
+	transition: height 1s;
+	-webkit-transition: 1s;
+	-moz-transition: 1s;
+	-o-transition: 1s;
+	overflow: hidden;
+	margin-top: 10px;
+	/*height: 0px;*/
+}
+/*title of the component*/
+.componentLabel{
+	max-width: 105px;
+}
+/*counter for components*/
+.numberCounter{
+	margin-left: 5px;
+	margin-right: 5px;
+	max-width: 8px;
+}
+/*set size of plus/minus icons*/
+.controlIcon{
+	height: 15px;
+	width: 12px;
+}
+
+.controlIcon:hover{
+	cursor: pointer;
+}
+
+.price{
+	font-size: 15px;
+}
+/*need this to hide/display prices depending on screen size*/
+.priceColumn{
+	text-align: center;
+	display: none;
+}
+/*style the kit tables*/
+.kitTable > tbody > tr >td{
+	width: 25%;
+}
+
+.kitTable > tbody > tr{
+	border-bottom: 1px solid #ddd;
+}
+
+.quantityContainer{
+	float: right;
+}
+
+.componentImage{
+	width: 100%;
+	margin-bottom: 8px;
+	margin-top: 8px;
+}
+
+.imageColumn{
+	display: none;
+}
+/*media queries for different size devices*/
+@media (min-width: 321px){
+	.componentLabel{
+		max-width: 120px;
+	}
+	
+}
+
+@media (min-width: 400px){
+	.componentLabel{
+		max-width: 125px;
+	}
+
+	.controlIcon{
+		height: 16px;
+		width: 13px;
+	}
+	
+}
+
+@media (min-width: 600px){
+
+	.priceColumn{
+		display: table-cell;
+	}
+	
+}
+
+
+@media (min-width: 750px){
+	.componentLabel{
+		max-width: 300px;
+	}
+
+	.controlIcon{
+		height: 21px;
+		width: 19px;
+	}
+
+	.numberCounter{
+		font-size: 18px;
+	}
+	.numberCounter{
+		max-width: none;
+		width:15px;
+	}
+	
+}
+
+@media (min-width: 800px){
+	.bundle-selector-content{
+		transition: height 500ms;
+		-webkit-transition: 500ms;
+		-moz-transition: 500ms;
+		-o-transition: 500ms;
+		/*height: 0px;*/
+	}
+
+	.imageColumn{
+		display: table-cell;
+	}
+
+	.componentLabel{
+		margin-left: 8px;
+	}
+
+}
+
+@media (min-width: 1000px){
+	.componentLabel{
+		max-width: 800px;
+	}
+
+	.componentImage{
+		width: 60%;
+	}
+
+	.componentLabel{
+		margin-left: 0px;
+	}
+}
