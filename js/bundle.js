@@ -178,11 +178,15 @@ kitBuilder.prototype.windowResized = function(event){
 	for(var i =0; i < this.bundleContentElements.length;i++){
 		
 		if(this.bundleContentElements[i].style.height !== "0px"){
-			console.log(this.bundleContentElements[i].scrollHeight);
+			console.log("second loop ",this.bundleContentElements[i].scrollHeight);
 			this.bundleContentElements[i].style.height = this.bundleContentElements[i].scrollHeight + "px";
 		}
 	}
 	
+}
+
+kitBuilder.prototype.setScrollHeights = function(newHeight,index){
+	console.log("Kit builder new height and index: ",newHeight,index);
 }
 //this method handles when a dropdown button is clicked changes the height of the dropdown content and the rotation angle of the of the arrow for the animation effects also removes the bottom border after a 450ms
 kitBuilder.prototype.buttonClicked = function(event){
