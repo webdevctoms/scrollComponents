@@ -1,0 +1,40 @@
+.scrollContainer{
+	position: relative;
+	text-align: center;
+}
+
+.scrollArrow{
+	width: 15px;
+	height: 18px;
+	display: inline-block;
+}
+
+.scrollArrowLeft{
+	position: absolute;
+	transform: rotate(90deg);
+	left: 0;
+}
+
+.scrollArrowRight{
+	position: absolute;
+	transform: rotate(270deg);
+	right: 0;
+}
+
+.scrollComponents{
+	display: inline-block;	
+	overflow: hidden;
+	transition: all 1s;
+	max-width: 90%;
+}
+
+.scrollImage{
+	width: 80%
+}
+
+.scrollItem{
+	max-width: 32%;
+	display: inline-block;
+}
+
+
