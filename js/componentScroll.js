@@ -40,7 +40,6 @@ ScrollComponent.prototype.initScrollArray = function(columns){
 }
 
 ScrollComponent.prototype.initViewHeights = function(){
-	var newHeight = 0;
 	var maxHeights = [];
 	for(var i = 0;i < this.activeItemIndexesArray.length;i++){
 		var maxHeight = 0;
@@ -55,7 +54,6 @@ ScrollComponent.prototype.initViewHeights = function(){
 		}
 		this.scrollComponents[i].style.height = maxHeight + "px";
 		//10 for margin
-		newHeight += maxHeight;
 	}
 	//console.log(newHeight);
 	this.setLabelOffsets(maxHeights);
@@ -88,7 +86,7 @@ ScrollComponent.prototype.initRightArrowButtons = function(buttons){
 	}
 	
 }
-
+//right will increment the active arrow by 1 until it reaches the max of row arrow
 ScrollComponent.prototype.rightButtonClicked = function(event){
 	console.log("Right button:", event.target);
 }
@@ -101,7 +99,7 @@ ScrollComponent.prototype.initLeftArrowButtons = function(buttons){
 	}
 	
 }
-
+//left will decrement the active arrow by 1 until it reaches 0
 ScrollComponent.prototype.leftButtonClicked = function(event){
 	console.log("Left button:", event.target);
 }
@@ -109,6 +107,7 @@ ScrollComponent.prototype.leftButtonClicked = function(event){
 ScrollComponent.prototype.windowResized = function(event){
 	console.log("test");
 	this.initViewHeights();
+	this.setHiddenToSecondRow();
 	//this.dropdown.windowResized();
 }
 
@@ -125,36 +124,75 @@ ScrollComponent.prototype.setLabelOffsets = function(maxHeights){
 }
 
 ScrollComponent.prototype.setHiddenLabelOffsets = function(rowMaxHeights){
+	for(var i = 0;i < this.scrollArray.length;i++){
+		for(var k =0;k< this.scrollArray[i].length;k++){
+			for (var j = 0; j < this.scrollArray[i][k].length; j++) {
+				
+			}
+		}
+	}
+}
 
+ScrollComponent.prototype.enableItemTransitions = function(){
+	for(var i = 0;i < this.scrollArray.length;i++){
+		for(var k =0;k< this.scrollArray[i].length;k++){
+			for (var j = 0; j < this.scrollArray[i][k].length; j++) {
+				this.scrollArray[i][k][j].style.transition = "all 1s";
+			}
+		}
+	}
+}
+
+ScrollComponent.prototype.disableItemTransitions = function(){
+	for(var i = 0;i < this.scrollArray.length;i++){
+		for(var k =0;k< this.scrollArray[i].length;k++){
+			for (var j = 0; j < this.scrollArray[i][k].length; j++) {
+				this.scrollArray[i][k][j].style.transition = "none";
+			}
+		}
+	}
 }
 
 ScrollComponent.prototype.setHiddenToSecondRow = function(){
+	//this array will be passed for setting offsets
 	var maxRowHeights = [];
 	//will move everything to the second row and then will move them back and forth from second row
+	this.disableItemTransitions();
 	for(var i = 0;i < this.scrollArray.length;i++){
+		//this array is used inside the loops
+		var tempMaxHeights = [];
+		//this array is used to capture the max heights
+		var rowHeights = [];
 		//skip the first row
-		for(var k = 1;k < this.scrollArray[i].length;k++){
+		for(var k = 0;k < this.scrollArray[i].length;k++){
 			var rowMax = 0;
 			for(var j = 0;j < this.scrollArray[i][k].length;j++){
 				//capture the max
 				if(this.scrollArray[i][k][j].scrollHeight > rowMax){
-						rowMax = this.scrollArray[i][k][j].scrollHeight;
+					rowMax = this.scrollArray[i][k][j].scrollHeight;
+
 				}
-				if(k === 1){
+				if(k === this.activeItemIndexesArray[i]){
 					continue;
 				}
 				else{
 					var transformPixels = 0;
-					for(var x = 0;x < maxRowHeights.length;x++){
-						transformPixels += maxRowHeights[x] + 5;
+					for(var x = 0;x < tempMaxHeights.length;x++){
+						transformPixels += tempMaxHeights[x] + 5;
 					}
 					//minus will move it up)
+					
 					this.scrollArray[i][k][j].style.transform = "translateY(-" + transformPixels + "px)";
-
+					
 				}
+
 			}
-			maxRowHeights[k -1] = rowMax;
+			rowHeights.push(rowMax);
+			tempMaxHeights[k -1] = rowMax;
+
 		}
+		maxRowHeights.push(rowHeights);
 	}
+	this.enableItemTransitions();
 	console.log("max row heights after translate ",maxRowHeights);
 }

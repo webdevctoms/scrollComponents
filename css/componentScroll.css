@@ -40,7 +40,7 @@
 	margin-top: 5px;
 	max-width: 32%;
 	display: inline-block;
-	transition: all 1s;
+	/*transition: all 1s;*/
 	vertical-align: top;
 }
 
