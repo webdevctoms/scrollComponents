@@ -38,28 +38,31 @@ ScrollComponent.prototype.initScrollArray = function(columns){
 
 ScrollComponent.prototype.initViewHeights = function(){
 	var newHeight = 0;
+	var maxHeights = [];
 	for(var i = 0;i < this.activeItemIndexesArray.length;i++){
 		var maxHeight = 0;
-		for(var k = 0; k < this.scrollArray[i].length;k++){
-			for(var j = 0;j < this.scrollArray[i][k].length; j++){
-				//console.log(this.scrollArray[i][k][j].scrollHeight);
-				if(this.scrollArray[i][k][j].scrollHeight > maxHeight){
-					maxHeight = this.scrollArray[i][k][j].scrollHeight;
-				}
+		for(var k = 0;k < this.scrollArray[i][this.activeItemIndexesArray[i]].length;k++){
+			
+			if(this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight > maxHeight){
+				maxHeight = this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight;
+				maxHeights[i] = this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight;
+				
 			}
 		}
 		this.scrollComponents[i].style.height = maxHeight + "px";
 		//10 for margin
 		newHeight += maxHeight;
 	}
-	console.log(newHeight);
+	//console.log(newHeight);
+	this.setLabelOffsets(maxHeights);
+	console.log("maxHeights ", maxHeights)
 	this.adjustArrows();
 	this.dropdown.windowResized();
 }
 
 ScrollComponent.prototype.adjustArrows = function(){
 	for(var i =0; i < this.scrollComponents.length; i++){
-		console.log(this.scrollComponents[i].style.height);
+		//console.log(this.scrollComponents[i].style.height);
 		var numHeight = parseInt(this.scrollComponents[i].style.height.replace("px",""))
 		var halfHeight = numHeight / 2;
 		this.leftArrows[i].style.top = halfHeight + "px";
@@ -75,9 +78,21 @@ ScrollComponent.prototype.initWindowListener = function(){
 //need to find active slide then resize based off that size
 ScrollComponent.prototype.windowResized = function(event){
 	console.log("test");
-	this.dropdown.windowResized();
+	this.initViewHeights();
+	//this.dropdown.windowResized();
 }
-//will need to resize the scroll "view" when changing elements
-ScrollComponent.prototype.resizeScrollView = function(){
 
+ScrollComponent.prototype.setLabelOffsets = function(maxHeights){
+	
+	
+	for(var i = 0;i < this.activeItemIndexesArray.length;i++){
+		var maxHeight = 0;
+		for(var k = 0;k < this.scrollArray[i][this.activeItemIndexesArray[i]].length;k++){
+			
+			if(this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight < maxHeights[i]){
+				var adjustedHeightDiff = maxHeights[i] - this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight + 5;
+				this.scrollArray[i][this.activeItemIndexesArray[i]][k].children[1].style.marginBottom = adjustedHeightDiff + "px";
+			}
+		}
+	}
 }

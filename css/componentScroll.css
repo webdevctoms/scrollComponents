@@ -9,6 +9,10 @@
 	display: inline-block;
 }
 
+.scrollArrow:hover{
+	cursor: pointer;
+}
+
 .scrollArrowLeft{
 	position: absolute;
 	transform: rotate(90deg);
@@ -24,7 +28,7 @@
 .scrollComponents{
 	display: inline-block;	
 	overflow: hidden;
-	transition: all 1s;
+	/*transition: all 500ms;*/
 	max-width: 90%;
 }
 
