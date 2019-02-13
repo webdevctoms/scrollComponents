@@ -42,7 +42,8 @@ ScrollComponent.prototype.initViewHeights = function(){
 	for(var i = 0;i < this.activeItemIndexesArray.length;i++){
 		var maxHeight = 0;
 		for(var k = 0;k < this.scrollArray[i][this.activeItemIndexesArray[i]].length;k++){
-			
+			//need this here to reset margin so that max heights won't be affected by label margin
+			this.scrollArray[i][this.activeItemIndexesArray[i]][k].children[1].style.marginBottom = "5px";
 			if(this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight > maxHeight){
 				maxHeight = this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight;
 				maxHeights[i] = this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight;
@@ -55,7 +56,7 @@ ScrollComponent.prototype.initViewHeights = function(){
 	}
 	//console.log(newHeight);
 	this.setLabelOffsets(maxHeights);
-	console.log("maxHeights ", maxHeights)
+	//console.log("maxHeights ", maxHeights)
 	this.adjustArrows();
 	this.dropdown.windowResized();
 }
@@ -88,7 +89,6 @@ ScrollComponent.prototype.setLabelOffsets = function(maxHeights){
 	for(var i = 0;i < this.activeItemIndexesArray.length;i++){
 		var maxHeight = 0;
 		for(var k = 0;k < this.scrollArray[i][this.activeItemIndexesArray[i]].length;k++){
-			
 			if(this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight < maxHeights[i]){
 				var adjustedHeightDiff = maxHeights[i] - this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight + 5;
 				this.scrollArray[i][this.activeItemIndexesArray[i]][k].children[1].style.marginBottom = adjustedHeightDiff + "px";
