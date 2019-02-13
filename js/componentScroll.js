@@ -10,7 +10,7 @@ function ScrollComponent(scrollComponentClass,leftArrowClass,rightArrowClass,dro
 	console.log(this.scrollComponents,this.leftArrows);
 	this.initScrollArray(3);
 	console.log(this.scrollArray,this.activeItemIndexesArray);
-	this.setHiddenToSecondRow();
+	this.setHiddenLabelOffsets(this.setHiddenToSecondRow());
 	this.initRightArrowButtons(this.rightArrows);
 	this.initLeftArrowButtons(this.leftArrows);
 	this.initViewHeights();
@@ -117,6 +117,7 @@ ScrollComponent.prototype.setLabelOffsets = function(maxHeights){
 		for(var k = 0;k < this.scrollArray[i][this.activeItemIndexesArray[i]].length;k++){
 			if(this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight < maxHeights[i]){
 				var adjustedHeightDiff = maxHeights[i] - this.scrollArray[i][this.activeItemIndexesArray[i]][k].scrollHeight + 5;
+				//target the label
 				this.scrollArray[i][this.activeItemIndexesArray[i]][k].children[1].style.marginBottom = adjustedHeightDiff + "px";
 			}
 		}
@@ -127,7 +128,13 @@ ScrollComponent.prototype.setHiddenLabelOffsets = function(rowMaxHeights){
 	for(var i = 0;i < this.scrollArray.length;i++){
 		for(var k =0;k< this.scrollArray[i].length;k++){
 			for (var j = 0; j < this.scrollArray[i][k].length; j++) {
-				
+				console.log("hidden offset ", this.scrollArray[i][k][j].scrollHeight,rowMaxHeights[i][k]);
+				if(this.scrollArray[i][k][j].scrollHeight < rowMaxHeights[i][k]){
+
+					var adjustedHeightDiff = rowMaxHeights[i][k] - this.scrollArray[i][k][j].scrollHeight + 5;
+					this.scrollArray[i][k][j].children[1].style.marginBottom = adjustedHeightDiff + "px";
+					//console.log("margin bottom offset ", this.scrollArray[i][k][j].children[1].style.marginBottom);
+				}
 			}
 		}
 	}
@@ -195,4 +202,6 @@ ScrollComponent.prototype.setHiddenToSecondRow = function(){
 	}
 	this.enableItemTransitions();
 	console.log("max row heights after translate ",maxRowHeights);
+
+	return maxRowHeights;
 }
