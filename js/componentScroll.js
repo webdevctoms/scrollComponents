@@ -11,6 +11,8 @@ function ScrollComponent(scrollComponentClass,leftArrowClass,rightArrowClass,dro
 	this.initScrollArray(3);
 	console.log(this.scrollArray,this.activeItemIndexesArray);
 	this.setHiddenToSecondRow();
+	this.initRightArrowButtons(this.rightArrows);
+	this.initLeftArrowButtons(this.leftArrows);
 	this.initViewHeights();
 	this.initWindowListener();
 
@@ -77,6 +79,32 @@ ScrollComponent.prototype.initWindowListener = function(){
 		this.windowResized(e);
 	}.bind(this),false);
 }
+
+ScrollComponent.prototype.initRightArrowButtons = function(buttons){
+	for(var i = 0;i < buttons.length;i++){
+		buttons[i].addEventListener('click',function(e){
+			this.rightButtonClicked(e);
+		}.bind(this),false);
+	}
+	
+}
+
+ScrollComponent.prototype.rightButtonClicked = function(event){
+	console.log("Right button:", event.target);
+}
+
+ScrollComponent.prototype.initLeftArrowButtons = function(buttons){
+	for(var i = 0;i < buttons.length;i++){
+		buttons[i].addEventListener('click',function(e){
+			this.leftButtonClicked(e);
+		}.bind(this),false);
+	}
+	
+}
+
+ScrollComponent.prototype.leftButtonClicked = function(event){
+	console.log("Left button:", event.target);
+}
 //need to find active slide then resize based off that size
 ScrollComponent.prototype.windowResized = function(event){
 	console.log("test");
@@ -94,6 +122,10 @@ ScrollComponent.prototype.setLabelOffsets = function(maxHeights){
 			}
 		}
 	}
+}
+
+ScrollComponent.prototype.setHiddenLabelOffsets = function(rowMaxHeights){
+
 }
 
 ScrollComponent.prototype.setHiddenToSecondRow = function(){
@@ -124,4 +156,5 @@ ScrollComponent.prototype.setHiddenToSecondRow = function(){
 			maxRowHeights[k -1] = rowMax;
 		}
 	}
+	console.log("max row heights after translate ",maxRowHeights);
 }
