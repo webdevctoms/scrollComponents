@@ -31,7 +31,7 @@ kitBuilder.prototype.getHeights = function(isOpen){
 			this.bundleContentElements[i].style.height = "0px";
 		}			
 	}
-	console.log(heights);
+	console.log("dropdown heights: ",heights);
 	return heights;
 }
 //this method grabs the buttons from the site using the button id passed in the initializer
@@ -169,7 +169,7 @@ kitBuilder.prototype.windowResized = function(event){
 	for(var i =0; i < this.bundleContentElements.length;i++){
 		
 		if(this.bundleContentElements[i].style.height !== "0px"){
-			console.log("first loop ",this.bundleContentElements[i].style.height);
+			//console.log("first loop ",this.bundleContentElements[i].style.height);
 			this.bundleContentElements[i].style.height = "auto";
 		}
 	}
@@ -178,7 +178,7 @@ kitBuilder.prototype.windowResized = function(event){
 	for(var i =0; i < this.bundleContentElements.length;i++){
 		
 		if(this.bundleContentElements[i].style.height !== "0px"){
-			console.log("second loop ",this.bundleContentElements[i].scrollHeight);
+			//console.log("second loop ",this.bundleContentElements[i].scrollHeight);
 			this.bundleContentElements[i].style.height = this.bundleContentElements[i].scrollHeight + "px";
 		}
 	}
