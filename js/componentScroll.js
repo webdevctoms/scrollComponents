@@ -89,6 +89,8 @@ ScrollComponent.prototype.initRightArrowButtons = function(buttons){
 //right will increment the active arrow by 1 until it reaches the max of row arrow
 ScrollComponent.prototype.rightButtonClicked = function(event){
 	console.log("Right button:", event.target);
+	var scrollComponent = event.target.previousElementSibling;
+	console.log("right scroll ",scrollComponent);
 }
 
 ScrollComponent.prototype.initLeftArrowButtons = function(buttons){
@@ -102,6 +104,8 @@ ScrollComponent.prototype.initLeftArrowButtons = function(buttons){
 //left will decrement the active arrow by 1 until it reaches 0
 ScrollComponent.prototype.leftButtonClicked = function(event){
 	console.log("Left button:", event.target);
+	var scrollComponent = event.target.nextElementSibling;
+	console.log("left scroll ",scrollComponent);
 }
 //need to find active slide then resize based off that size
 ScrollComponent.prototype.windowResized = function(event){
@@ -128,7 +132,7 @@ ScrollComponent.prototype.setHiddenLabelOffsets = function(rowMaxHeights){
 	for(var i = 0;i < this.scrollArray.length;i++){
 		for(var k =0;k< this.scrollArray[i].length;k++){
 			for (var j = 0; j < this.scrollArray[i][k].length; j++) {
-				console.log("hidden offset ", this.scrollArray[i][k][j].scrollHeight,rowMaxHeights[i][k]);
+				//console.log("hidden offset ", this.scrollArray[i][k][j].scrollHeight,rowMaxHeights[i][k]);
 				if(this.scrollArray[i][k][j].scrollHeight < rowMaxHeights[i][k]){
 
 					var adjustedHeightDiff = rowMaxHeights[i][k] - this.scrollArray[i][k][j].scrollHeight + 5;
