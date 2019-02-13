@@ -5,6 +5,7 @@ function ScrollComponent(scrollComponentClass,leftArrowClass,rightArrowClass,dro
 	this.arrows = document.getElementsByClassName(arrowClass);
 	//reference to the previously created dropdown object 
 	this.dropdown = dropdownRef;
+	this.animationRunning = false;
 	this.scrollArray = [];
 	this.activeItemIndexesArray = [];
 	console.log(this.scrollComponents,this.leftArrows);
@@ -86,11 +87,23 @@ ScrollComponent.prototype.initRightArrowButtons = function(buttons){
 	}
 	
 }
+ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem){
+
+	setTimeout(function(){
+		console.log(scrollItem);
+			scrollItem.style.transform = "translateY(" + scrollItem.scrollHeight + "px)";
+		},1000 / i);
+}
 //right will increment the active arrow by 1 until it reaches the max of row arrow
 ScrollComponent.prototype.rightButtonClicked = function(event){
 	console.log("Right button:", event.target);
 	var scrollComponent = event.target.previousElementSibling;
-	console.log("right scroll ",scrollComponent);
+	var scrollID = scrollComponent.dataset.scrollcomponentid;
+	for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
+		console.log(i - 1);
+		var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
+		this.handleTimeoutRight(i,scrollItem);
+	}
 }
 
 ScrollComponent.prototype.initLeftArrowButtons = function(buttons){
@@ -105,7 +118,8 @@ ScrollComponent.prototype.initLeftArrowButtons = function(buttons){
 ScrollComponent.prototype.leftButtonClicked = function(event){
 	console.log("Left button:", event.target);
 	var scrollComponent = event.target.nextElementSibling;
-	console.log("left scroll ",scrollComponent);
+	var scrollID = scrollComponent.dataset.scrollcomponentid;
+	console.log("left scroll ",scrollID);
 }
 //need to find active slide then resize based off that size
 ScrollComponent.prototype.windowResized = function(event){
@@ -174,7 +188,7 @@ ScrollComponent.prototype.setHiddenToSecondRow = function(){
 		var tempMaxHeights = [];
 		//this array is used to capture the max heights
 		var rowHeights = [];
-		//skip the first row
+
 		for(var k = 0;k < this.scrollArray[i].length;k++){
 			var rowMax = 0;
 			for(var j = 0;j < this.scrollArray[i][k].length;j++){
