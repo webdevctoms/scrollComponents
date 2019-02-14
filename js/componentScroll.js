@@ -97,7 +97,7 @@ ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeigh
 	if(!scrollUp){
 		setTimeout(function(){
 		//console.log(scrollItem);
-			var currentTranslate = parseInt(scrollItem.style.transform.match(/-\d+/g));
+			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			if(!currentTranslate){
 				currentTranslate = 0;
 			}
@@ -107,10 +107,11 @@ ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeigh
 	}
 	else if(scrollUp){
 		setTimeout(function(){
-			var currentTranslate = parseInt(scrollItem.style.transform.match(/\d+/g));
-			var newHeight = currentTranslate + offsetHeight;
+			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
+			var newHeight = currentTranslate - offsetHeight;
 			//console.log(scrollItem.style.transform.match(/\d+/g));
-			scrollItem.style.transform = "translateY(-" + newHeight + "px)";
+			scrollItem.style.transform = "translateY(" + newHeight + "px)";
+			//console.log(i,newHeight,scrollItem,currentTranslate,scrollItem.style.transform);
 	
 		},1500 / i);
 	}
@@ -134,7 +135,7 @@ ScrollComponent.prototype.rightButtonClicked = function(event){
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
 			this.handleTimeoutRight(i,scrollItem,rowScrollHeight,true);			
 		}
-		//console.log()
+		console.log(this.activeItemIndexesArray)
 		//this.initViewHeights();
 		//this.setHiddenToSecondRow();
 	}
@@ -151,24 +152,32 @@ ScrollComponent.prototype.initLeftArrowButtons = function(buttons){
 	
 }
 
-ScrollComponent.prototype.handleTimeoutLeft = function(i,scrollItem,offsetHeight){
+ScrollComponent.prototype.handleTimeoutLeft = function(i,scrollItem,offsetHeight,scrollUp){
 	if(offsetHeight === undefined){
-		offsetHeight = false;
+		offsetHeight =false;
 	}
-	if(!offsetHeight){
+	if(scrollUp === undefined){
+		scrollUp = false;
+	}
+	//console.log(i);
+	if(!scrollUp){
 		setTimeout(function(){
 		//console.log(scrollItem);
-			scrollItem.style.transform = "translateY(" + (scrollItem.scrollHeight + 5) + "px)";		
-		},1000 / i);
-	}
-	else if(offsetHeight){
-		setTimeout(function(){
-			var currentTranslate = parseInt(scrollItem.style.transform.match(/\d+/g));
+			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
+			if(!currentTranslate){
+				currentTranslate = 0;
+			}
 			var newHeight = currentTranslate + offsetHeight;
-			//console.log(scrollItem.style.transform.match(/\d+/g));
-			scrollItem.style.transform = "translateY(-" + newHeight + "px)";
-	
-		},1500 / i);
+			scrollItem.style.transform = "translateY(" + newHeight + "px)";		
+		},200 * i);
+	}
+	else if(scrollUp){
+		setTimeout(function(){
+			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
+			var newHeight = currentTranslate - offsetHeight;			
+			scrollItem.style.transform = "translateY(" + newHeight + "px)";
+			//console.log(i,newHeight,scrollItem,currentTranslate,scrollItem.style.transform);
+		},500 * i);
 	}
 	
 }
@@ -178,18 +187,20 @@ ScrollComponent.prototype.leftButtonClicked = function(event){
 	console.log("Left button:", event.target);
 	var scrollComponent = event.target.nextElementSibling;
 	var scrollID = scrollComponent.dataset.scrollcomponentid;
-	console.log("left scroll ",scrollID);
+	console.log("left scroll ",this.activeItemIndexesArray,scrollID);
 	if(this.activeItemIndexesArray[scrollID] > 0){
 		var rowScrollHeight = this.scrollArray[scrollID][0][0].scrollHeight + 5;
+		//active row
 		for(var i = 0;i < this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i++){
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i];
-			this.handleTimeoutRight(i,scrollItem);
+			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight);
 		}
 		this.activeItemIndexesArray[scrollID] -= 1;
-		for(var i = 0;i > this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length; i++){
-			
-			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
-			this.handleTimeoutRight(i,scrollItem,rowScrollHeight);			
+		//previous row
+		for(var i = 0;i < this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length; i++){
+
+			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i];
+			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight,true);			
 		}
 	}
 }
