@@ -87,17 +87,25 @@ ScrollComponent.prototype.initRightArrowButtons = function(buttons){
 	}
 	
 }
-ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeight){
+ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeight,scrollUp){
 	if(offsetHeight === undefined){
 		offsetHeight =false;
 	}
-	if(!offsetHeight){
+	if(scrollUp === undefined){
+		scrollUp = false;
+	}
+	if(!scrollUp){
 		setTimeout(function(){
 		//console.log(scrollItem);
-			scrollItem.style.transform = "translateY(" + (scrollItem.scrollHeight + 5) + "px)";		
+			var currentTranslate = parseInt(scrollItem.style.transform.match(/-\d+/g));
+			if(!currentTranslate){
+				currentTranslate = 0;
+			}
+			var newHeight = currentTranslate + offsetHeight;
+			scrollItem.style.transform = "translateY(" + newHeight + "px)";		
 		},1000 / i);
 	}
-	else if(offsetHeight){
+	else if(scrollUp){
 		setTimeout(function(){
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/\d+/g));
 			var newHeight = currentTranslate + offsetHeight;
@@ -118,13 +126,13 @@ ScrollComponent.prototype.rightButtonClicked = function(event){
 		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
 			//console.log(i - 1);
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
-			this.handleTimeoutRight(i,scrollItem);
+			this.handleTimeoutRight(i,scrollItem,rowScrollHeight);
 		}
 		this.activeItemIndexesArray[scrollID] += 1;
 		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
 			
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
-			this.handleTimeoutRight(i,scrollItem,rowScrollHeight);			
+			this.handleTimeoutRight(i,scrollItem,rowScrollHeight,true);			
 		}
 		//console.log()
 		//this.initViewHeights();
@@ -142,12 +150,48 @@ ScrollComponent.prototype.initLeftArrowButtons = function(buttons){
 	}
 	
 }
+
+ScrollComponent.prototype.handleTimeoutLeft = function(i,scrollItem,offsetHeight){
+	if(offsetHeight === undefined){
+		offsetHeight = false;
+	}
+	if(!offsetHeight){
+		setTimeout(function(){
+		//console.log(scrollItem);
+			scrollItem.style.transform = "translateY(" + (scrollItem.scrollHeight + 5) + "px)";		
+		},1000 / i);
+	}
+	else if(offsetHeight){
+		setTimeout(function(){
+			var currentTranslate = parseInt(scrollItem.style.transform.match(/\d+/g));
+			var newHeight = currentTranslate + offsetHeight;
+			//console.log(scrollItem.style.transform.match(/\d+/g));
+			scrollItem.style.transform = "translateY(-" + newHeight + "px)";
+	
+		},1500 / i);
+	}
+	
+}
+
 //left will decrement the active arrow by 1 until it reaches 0
 ScrollComponent.prototype.leftButtonClicked = function(event){
 	console.log("Left button:", event.target);
 	var scrollComponent = event.target.nextElementSibling;
 	var scrollID = scrollComponent.dataset.scrollcomponentid;
 	console.log("left scroll ",scrollID);
+	if(this.activeItemIndexesArray[scrollID] > 0){
+		var rowScrollHeight = this.scrollArray[scrollID][0][0].scrollHeight + 5;
+		for(var i = 0;i < this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i++){
+			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i];
+			this.handleTimeoutRight(i,scrollItem);
+		}
+		this.activeItemIndexesArray[scrollID] -= 1;
+		for(var i = 0;i > this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length; i++){
+			
+			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
+			this.handleTimeoutRight(i,scrollItem,rowScrollHeight);			
+		}
+	}
 }
 //need to find active slide then resize based off that size
 ScrollComponent.prototype.windowResized = function(event){
