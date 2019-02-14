@@ -285,11 +285,17 @@ ScrollComponent.prototype.setHiddenToSecondRow = function(){
 				}
 				else{
 					var transformPixels = 0;
+					console.log(k,tempMaxHeights);
 					for(var x = 0;x < tempMaxHeights.length;x++){
 						transformPixels += tempMaxHeights[x] + 5;
 					}
 					//minus will move it up)
-					
+					if(k == 0){
+						console.log("transformPixels ",transformPixels);
+						transformPixels = rowMax + 5;
+						this.scrollArray[i][k][j].style.transform = "translateY(" + transformPixels + "px)";
+						continue;
+					}
 					this.scrollArray[i][k][j].style.transform = "translateY(-" + transformPixels + "px)";
 					
 				}
