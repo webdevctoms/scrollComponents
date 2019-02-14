@@ -87,20 +87,20 @@ ScrollComponent.prototype.initRightArrowButtons = function(buttons){
 	}
 	
 }
-ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,prevHeight){
-	if(prevHeight === undefined){
-		prevHeight =false;
+ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeight){
+	if(offsetHeight === undefined){
+		offsetHeight =false;
 	}
-	if(!prevHeight){
+	if(!offsetHeight){
 		setTimeout(function(){
 		//console.log(scrollItem);
-			scrollItem.style.transform = "translateY(" + scrollItem.scrollHeight + "px)";		
+			scrollItem.style.transform = "translateY(" + (scrollItem.scrollHeight + 5) + "px)";		
 		},1000 / i);
 	}
-	else{
+	else if(offsetHeight){
 		setTimeout(function(){
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/\d+/g));
-			var newHeight = currentTranslate + prevHeight + 5;
+			var newHeight = currentTranslate + offsetHeight;
 			//console.log(scrollItem.style.transform.match(/\d+/g));
 			scrollItem.style.transform = "translateY(-" + newHeight + "px)";
 	
@@ -114,6 +114,7 @@ ScrollComponent.prototype.rightButtonClicked = function(event){
 	var scrollComponent = event.target.previousElementSibling;
 	var scrollID = scrollComponent.dataset.scrollcomponentid;
 	if(this.activeItemIndexesArray[scrollID] < (this.scrollArray[scrollID].length - 1)){
+		var rowScrollHeight = this.scrollArray[scrollID][0][0].scrollHeight + 5;
 		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
 			//console.log(i - 1);
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
@@ -121,10 +122,13 @@ ScrollComponent.prototype.rightButtonClicked = function(event){
 		}
 		this.activeItemIndexesArray[scrollID] += 1;
 		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
-			//console.log(i - 1);
+			
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
-			this.handleTimeoutRight(i,scrollItem,this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] - 1][1].scrollHeight);
+			this.handleTimeoutRight(i,scrollItem,rowScrollHeight);			
 		}
+		//console.log()
+		//this.initViewHeights();
+		//this.setHiddenToSecondRow();
 	}
 	
 	
