@@ -87,23 +87,47 @@ ScrollComponent.prototype.initRightArrowButtons = function(buttons){
 	}
 	
 }
-ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem){
-
-	setTimeout(function(){
-		console.log(scrollItem);
-			scrollItem.style.transform = "translateY(" + scrollItem.scrollHeight + "px)";
+ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,prevHeight){
+	if(prevHeight === undefined){
+		prevHeight =false;
+	}
+	if(!prevHeight){
+		setTimeout(function(){
+		//console.log(scrollItem);
+			scrollItem.style.transform = "translateY(" + scrollItem.scrollHeight + "px)";		
 		},1000 / i);
+	}
+	else{
+		setTimeout(function(){
+			var currentTranslate = parseInt(scrollItem.style.transform.match(/\d+/g));
+			var newHeight = currentTranslate + prevHeight + 5;
+			//console.log(scrollItem.style.transform.match(/\d+/g));
+			scrollItem.style.transform = "translateY(-" + newHeight + "px)";
+	
+		},1500 / i);
+	}
+	
 }
 //right will increment the active arrow by 1 until it reaches the max of row arrow
 ScrollComponent.prototype.rightButtonClicked = function(event){
 	console.log("Right button:", event.target);
 	var scrollComponent = event.target.previousElementSibling;
 	var scrollID = scrollComponent.dataset.scrollcomponentid;
-	for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
-		console.log(i - 1);
-		var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
-		this.handleTimeoutRight(i,scrollItem);
+	if(this.activeItemIndexesArray[scrollID] < (this.scrollArray[scrollID].length - 1)){
+		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
+			//console.log(i - 1);
+			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
+			this.handleTimeoutRight(i,scrollItem);
+		}
+		this.activeItemIndexesArray[scrollID] += 1;
+		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
+			//console.log(i - 1);
+			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
+			this.handleTimeoutRight(i,scrollItem,this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] - 1][1].scrollHeight);
+		}
 	}
+	
+	
 }
 
 ScrollComponent.prototype.initLeftArrowButtons = function(buttons){
