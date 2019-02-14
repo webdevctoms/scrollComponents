@@ -87,6 +87,21 @@ ScrollComponent.prototype.initRightArrowButtons = function(buttons){
 	}
 	
 }
+ScrollComponent.prototype.resizeScrollView = function(scrollID){
+	var selectedScrollView;
+	for(var i = 0;i < this.scrollComponents.length;i++){
+		if(this.scrollComponents[i].dataset.scrollcomponentid === scrollID){
+			selectedScrollView = this.scrollComponents[i];
+		}
+	}
+	console.log("selected view",selectedScrollView);
+}
+/*
+can possibly add promises to set this variable when the timeout is done, but won't work on IE
+ScrollComponent.prototype.setAnimationStopped = function(){
+	this.animationRunning = false;
+}
+*/
 ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeight,scrollUp){
 	if(offsetHeight === undefined){
 		offsetHeight =false;
@@ -96,24 +111,27 @@ ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeigh
 	}
 	if(!scrollUp){
 		setTimeout(function(){
-		//console.log(scrollItem);
+	
+			this.animationRunning = true;
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			if(!currentTranslate){
 				currentTranslate = 0;
 			}
 			var newHeight = currentTranslate + offsetHeight;
-			scrollItem.style.transform = "translateY(" + newHeight + "px)";		
-		},1000 / i);
+			scrollItem.style.transform = "translateY(" + newHeight + "px)";	
+			this.animationRunning = false;
+		}.bind(this),1000 / i);
 	}
 	else if(scrollUp){
 		setTimeout(function(){
+			this.animationRunning = true;
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			var newHeight = currentTranslate - offsetHeight;
 			//console.log(scrollItem.style.transform.match(/\d+/g));
 			scrollItem.style.transform = "translateY(" + newHeight + "px)";
 			//console.log(i,newHeight,scrollItem,currentTranslate,scrollItem.style.transform);
-	
-		},1500 / i);
+			this.animationRunning = false;
+		}.bind(this),1500 / i);
 	}
 	
 }
@@ -135,9 +153,10 @@ ScrollComponent.prototype.rightButtonClicked = function(event){
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
 			this.handleTimeoutRight(i,scrollItem,rowScrollHeight,true);			
 		}
-		console.log(this.activeItemIndexesArray)
-		//this.initViewHeights();
+		
+		this.initViewHeights();
 		//this.setHiddenToSecondRow();
+		this.resizeScrollView(scrollID);
 	}
 	
 	
@@ -163,21 +182,25 @@ ScrollComponent.prototype.handleTimeoutLeft = function(i,scrollItem,offsetHeight
 	if(!scrollUp){
 		setTimeout(function(){
 		//console.log(scrollItem);
+		this.animationRunning = true;
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			if(!currentTranslate){
 				currentTranslate = 0;
 			}
 			var newHeight = currentTranslate + offsetHeight;
 			scrollItem.style.transform = "translateY(" + newHeight + "px)";		
-		},200 * i);
+			this.animationRunning = false;
+		}.bind(this),200 * i);
 	}
 	else if(scrollUp){
 		setTimeout(function(){
+			this.animationRunning = true;
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			var newHeight = currentTranslate - offsetHeight;			
 			scrollItem.style.transform = "translateY(" + newHeight + "px)";
 			//console.log(i,newHeight,scrollItem,currentTranslate,scrollItem.style.transform);
-		},500 * i);
+			this.animationRunning = false;
+		}.bind(this),500 * i);
 	}
 	
 }
@@ -202,6 +225,8 @@ ScrollComponent.prototype.leftButtonClicked = function(event){
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i];
 			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight,true);			
 		}
+		this.initViewHeights();
+		this.resizeScrollView(scrollID);
 	}
 }
 //need to find active slide then resize based off that size
@@ -209,6 +234,7 @@ ScrollComponent.prototype.windowResized = function(event){
 	console.log("test");
 	this.initViewHeights();
 	this.setHiddenToSecondRow();
+	console.log(this.animationRunning);
 	//this.dropdown.windowResized();
 }
 
@@ -285,13 +311,13 @@ ScrollComponent.prototype.setHiddenToSecondRow = function(){
 				}
 				else{
 					var transformPixels = 0;
-					console.log(k,tempMaxHeights);
+					//console.log(k,tempMaxHeights);
 					for(var x = 0;x < tempMaxHeights.length;x++){
 						transformPixels += tempMaxHeights[x] + 5;
 					}
 					//minus will move it up)
 					if(k == 0){
-						console.log("transformPixels ",transformPixels);
+						//console.log("transformPixels ",transformPixels);
 						transformPixels = rowMax + 5;
 						this.scrollArray[i][k][j].style.transform = "translateY(" + transformPixels + "px)";
 						continue;
@@ -308,7 +334,7 @@ ScrollComponent.prototype.setHiddenToSecondRow = function(){
 		maxRowHeights.push(rowHeights);
 	}
 	this.enableItemTransitions();
-	console.log("max row heights after translate ",maxRowHeights);
+	//console.log("max row heights after translate ",maxRowHeights);
 
 	return maxRowHeights;
 }
