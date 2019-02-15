@@ -29,7 +29,7 @@
 .scrollComponents{
 	display: inline-block;	
 	overflow: hidden;
-	/*transition: all 500ms;*/
+	transition: all 500ms;
 	max-width: 90%;
 }
 

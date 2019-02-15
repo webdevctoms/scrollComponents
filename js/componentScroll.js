@@ -87,14 +87,19 @@ ScrollComponent.prototype.initRightArrowButtons = function(buttons){
 	}
 	
 }
-ScrollComponent.prototype.resizeScrollView = function(scrollID){
+//resize scroll view on button click
+ScrollComponent.prototype.resizeScrollView = function(scrollID,rowDifference,activeRow,leftClicked){
 	var selectedScrollView;
+	if(leftClicked){
+		activeRow += 1;
+	}
+	var adjustedRowDiff = Math.abs(rowDifference) - activeRow * 5;
 	for(var i = 0;i < this.scrollComponents.length;i++){
 		if(this.scrollComponents[i].dataset.scrollcomponentid === scrollID){
 			selectedScrollView = this.scrollComponents[i];
 		}
 	}
-	console.log("selected view",selectedScrollView);
+	console.log("row Difference ",adjustedRowDiff,activeRow);
 }
 /*
 can possibly add promises to set this variable when the timeout is done, but won't work on IE
@@ -129,7 +134,7 @@ ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeigh
 			var newHeight = currentTranslate - offsetHeight;
 			//console.log(scrollItem.style.transform.match(/\d+/g));
 			scrollItem.style.transform = "translateY(" + newHeight + "px)";
-			//console.log(i,newHeight,scrollItem,currentTranslate,scrollItem.style.transform);
+			console.log(i,newHeight,scrollItem,currentTranslate,offsetHeight);
 			this.animationRunning = false;
 		}.bind(this),1500 / i);
 	}
@@ -140,8 +145,12 @@ ScrollComponent.prototype.rightButtonClicked = function(event){
 	console.log("Right button:", event.target);
 	var scrollComponent = event.target.previousElementSibling;
 	var scrollID = scrollComponent.dataset.scrollcomponentid;
+	console.log(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight,this.scrollArray[scrollID][1][0])
+	
+	//this.initViewHeights();
 	if(this.activeItemIndexesArray[scrollID] < (this.scrollArray[scrollID].length - 1)){
 		var rowScrollHeight = this.scrollArray[scrollID][0][0].scrollHeight + 5;
+		this.resizeScrollView(scrollID,(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] + 1][0].scrollHeight),this.activeItemIndexesArray[scrollID] + 1);
 		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
 			//console.log(i - 1);
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
@@ -156,7 +165,7 @@ ScrollComponent.prototype.rightButtonClicked = function(event){
 		
 		this.initViewHeights();
 		//this.setHiddenToSecondRow();
-		this.resizeScrollView(scrollID);
+		
 	}
 	
 	
@@ -198,7 +207,7 @@ ScrollComponent.prototype.handleTimeoutLeft = function(i,scrollItem,offsetHeight
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			var newHeight = currentTranslate - offsetHeight;			
 			scrollItem.style.transform = "translateY(" + newHeight + "px)";
-			//console.log(i,newHeight,scrollItem,currentTranslate,scrollItem.style.transform);
+			//console.log(i,newHeight,scrollItem,currentTranslate,offsetHeight);
 			this.animationRunning = false;
 		}.bind(this),500 * i);
 	}
@@ -211,10 +220,13 @@ ScrollComponent.prototype.leftButtonClicked = function(event){
 	var scrollComponent = event.target.nextElementSibling;
 	var scrollID = scrollComponent.dataset.scrollcomponentid;
 	console.log("left scroll ",this.activeItemIndexesArray,scrollID);
+	
 	if(this.activeItemIndexesArray[scrollID] > 0){
 		var rowScrollHeight = this.scrollArray[scrollID][0][0].scrollHeight + 5;
+		this.resizeScrollView(scrollID,(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] - 1][0].scrollHeight),this.activeItemIndexesArray[scrollID] - 1,true);
 		//active row
 		for(var i = 0;i < this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i++){
+
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i];
 			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight);
 		}
@@ -226,7 +238,7 @@ ScrollComponent.prototype.leftButtonClicked = function(event){
 			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight,true);			
 		}
 		this.initViewHeights();
-		this.resizeScrollView(scrollID);
+		//this.resizeScrollView(scrollID);
 	}
 }
 //need to find active slide then resize based off that size
