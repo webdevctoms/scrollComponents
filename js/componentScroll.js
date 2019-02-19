@@ -88,21 +88,35 @@ ScrollComponent.prototype.initRightArrowButtons = function(buttons){
 	
 }
 //resize scroll view on button click need to use this to adjust offsets of hidden ones that aren't active and weren't moved
-ScrollComponent.prototype.adjustHiddenOffsets = function(scrollID,rowDifference,activeRow,leftClicked){
+ScrollComponent.prototype.adjustHiddenOffsets = function(scrollID,activeRow,adjustedRowDiff,offsetHeight,leftClicked){
 	var selectedScrollView;
 	if(leftClicked === undefined){
 		leftClicked = false;
 	}
+	/*
 	if(leftClicked){
 		activeRow += 1;
 	}
-	var adjustedRowDiff = Math.abs(rowDifference) - activeRow * 5;
-	for(var i = 0;i < this.scrollComponents.length;i++){
-		if(this.scrollComponents[i].dataset.scrollcomponentid === scrollID){
-			selectedScrollView = this.scrollComponents[i];
+	*/
+
+	for(var i = 0;i < this.scrollArray[scrollID].length;i++){
+		//don't want to target current row or previous row when right clicked
+		console.log(activeRow);
+		if(i === activeRow || i === activeRow - 1){
+			continue;
+		}
+		for(var k = 0;k < this.scrollArray[scrollID][i].length; k++){
+			//console.log(this.scrollArray[scrollID][i][k]);
+			var currentTranslate = parseInt(this.scrollArray[scrollID][i][k].style.transform.match(/-?\d+/g));
+			if(!currentTranslate){
+				currentTranslate = 0;
+			}
+			var newHeight = currentTranslate + offsetHeight;
+			this.scrollArray[scrollID][i][k].style.transform = "translateY(" + (currentTranslate - adjustedRowDiff) + "px)";
 		}
 	}
-	console.log("row Difference ",adjustedRowDiff,activeRow);
+
+	console.log("row Difference hidden method ",adjustedRowDiff);
 }
 /*
 can possibly add promises to set this variable when the timeout is done, but won't work on IE
@@ -117,6 +131,7 @@ ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeigh
 	if(scrollUp === undefined){
 		scrollUp = false;
 	}
+
 	if(!scrollUp){
 		setTimeout(function(){
 	
@@ -125,8 +140,8 @@ ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeigh
 				currentTranslate = 0;
 			}
 			var newHeight = currentTranslate + offsetHeight;
-			console.log("row diff ", rowDifference);
-			scrollItem.style.transform = "translateY(" + (newHeight - rowDifference) + "px)";				
+			console.log("new height: ",newHeight);
+			scrollItem.style.transform = "translateY(" + (newHeight) + "px)";				
 			
 		}.bind(this),1000 / i);
 	}
@@ -136,6 +151,7 @@ ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeigh
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			var newHeight = currentTranslate - offsetHeight;
 			//console.log(scrollItem.style.transform.match(/\d+/g));
+			console.log("row diff right up ", rowDifference,offsetHeight);
 			scrollItem.style.transform = "translateY(" + newHeight + "px)";
 			//console.log(i,newHeight,scrollItem,currentTranslate,offsetHeight);
 			
@@ -152,8 +168,8 @@ ScrollComponent.prototype.rightButtonClicked = function(event){
 	
 	//this.initViewHeights();
 	if(this.activeItemIndexesArray[scrollID] < (this.scrollArray[scrollID].length - 1)){
-		var rowScrollHeight = this.scrollArray[scrollID][0][0].scrollHeight + 5;
-		this.adjustHiddenOffsets(scrollID,(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] + 1][0].scrollHeight),this.activeItemIndexesArray[scrollID] + 1);
+		var rowScrollHeight = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight + 5;
+		var nextRowHeight = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] + 1][0].scrollHeight + 5;
 		var activeRow = this.activeItemIndexesArray[scrollID] + 1;
 		var rowDifference = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] + 1][0].scrollHeight;
 
@@ -168,14 +184,16 @@ ScrollComponent.prototype.rightButtonClicked = function(event){
 		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
 			//console.log(i - 1);
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
-			this.handleTimeoutRight(i,scrollItem,rowScrollHeight,false,adjustedRowDiff);
+			this.handleTimeoutRight(i,scrollItem,nextRowHeight,false,adjustedRowDiff);
 		}
+		
 		this.activeItemIndexesArray[scrollID] += 1;
+		this.adjustHiddenOffsets(scrollID,activeRow,rowDifference,rowScrollHeight);
 		//bring next row up
 		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
 			
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
-			this.handleTimeoutRight(i,scrollItem,rowScrollHeight,true);			
+			this.handleTimeoutRight(i,scrollItem,rowScrollHeight,true,adjustedRowDiff);			
 		}
 		
 		this.initViewHeights();
@@ -218,7 +236,7 @@ ScrollComponent.prototype.handleTimeoutLeft = function(i,scrollItem,offsetHeight
 		setTimeout(function(){
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			var newHeight = currentTranslate - offsetHeight;			
-			scrollItem.style.transform = "translateY(" + (newHeight + rowDifference) + "px)";
+			scrollItem.style.transform = "translateY(" + (newHeight) + "px)";
 			console.log("row diff left:",rowDifference);
 		}.bind(this),500 * i);
 	}
@@ -270,7 +288,7 @@ ScrollComponent.prototype.windowResized = function(event){
 	console.log("test");
 	this.initViewHeights();
 	this.setHiddenToSecondRow();
-	console.log(this.animationRunning);
+	//console.log(this.animationRunning);
 	//this.dropdown.windowResized();
 }
 
