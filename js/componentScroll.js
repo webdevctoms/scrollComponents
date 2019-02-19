@@ -111,8 +111,13 @@ ScrollComponent.prototype.adjustHiddenOffsets = function(scrollID,activeRow,adju
 			if(!currentTranslate){
 				currentTranslate = 0;
 			}
-			var newHeight = currentTranslate + offsetHeight;
-			this.scrollArray[scrollID][i][k].style.transform = "translateY(" + (currentTranslate - adjustedRowDiff) + "px)";
+			if(!leftClicked){
+				this.scrollArray[scrollID][i][k].style.transform = "translateY(" + (currentTranslate - adjustedRowDiff) + "px)";
+			}
+			else{
+				this.scrollArray[scrollID][i][k].style.transform = "translateY(" + (currentTranslate + adjustedRowDiff) + "px)";
+			}
+			
 		}
 	}
 
@@ -237,7 +242,7 @@ ScrollComponent.prototype.handleTimeoutLeft = function(i,scrollItem,offsetHeight
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			var newHeight = currentTranslate - offsetHeight;			
 			scrollItem.style.transform = "translateY(" + (newHeight) + "px)";
-			console.log("row diff left:",rowDifference);
+			console.log("row left:",offsetHeight);
 		}.bind(this),500 * i);
 	}
 	
@@ -251,10 +256,12 @@ ScrollComponent.prototype.leftButtonClicked = function(event){
 	//console.log("left scroll ",this.activeItemIndexesArray,scrollID);
 	
 	if(this.activeItemIndexesArray[scrollID] > 0){
-		var rowScrollHeight = this.scrollArray[scrollID][0][0].scrollHeight + 5;
-		this.adjustHiddenOffsets(scrollID,(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] - 1][0].scrollHeight),this.activeItemIndexesArray[scrollID] - 1,true);
-
+		var rowScrollHeight = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight + 5;
+		var nextRowHeight = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] - 1][0].scrollHeight + 5;
 		var activeRow = this.activeItemIndexesArray[scrollID] - 1;
+		//this.adjustHiddenOffsets(scrollID,(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] - 1][0].scrollHeight),this.activeItemIndexesArray[scrollID] - 1,true);
+
+		//var activeRow = this.activeItemIndexesArray[scrollID] - 1;
 
 		var rowDifference = this.scrollArray[scrollID][activeRow][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight;
 		activeRow++;
@@ -270,9 +277,10 @@ ScrollComponent.prototype.leftButtonClicked = function(event){
 		for(var i = 0;i < this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i++){
 
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i];
-			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight,false,adjustedRowDiff);
+			this.handleTimeoutLeft(i,scrollItem,nextRowHeight,false,adjustedRowDiff);
 		}
 		this.activeItemIndexesArray[scrollID] -= 1;
+		this.adjustHiddenOffsets(scrollID,activeRow,rowDifference,rowScrollHeight,true);
 		//previous row
 		for(var i = 0;i < this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length; i++){
 
