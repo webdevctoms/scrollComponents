@@ -87,9 +87,12 @@ ScrollComponent.prototype.initRightArrowButtons = function(buttons){
 	}
 	
 }
-//resize scroll view on button click
-ScrollComponent.prototype.resizeScrollView = function(scrollID,rowDifference,activeRow,leftClicked){
+//resize scroll view on button click need to use this to adjust offsets of hidden ones that aren't active and weren't moved
+ScrollComponent.prototype.adjustHiddenOffsets = function(scrollID,rowDifference,activeRow,leftClicked){
 	var selectedScrollView;
+	if(leftClicked === undefined){
+		leftClicked = false;
+	}
 	if(leftClicked){
 		activeRow += 1;
 	}
@@ -107,7 +110,7 @@ ScrollComponent.prototype.setAnimationStopped = function(){
 	this.animationRunning = false;
 }
 */
-ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeight,scrollUp){
+ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeight,scrollUp,rowDifference){
 	if(offsetHeight === undefined){
 		offsetHeight =false;
 	}
@@ -117,46 +120,58 @@ ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeigh
 	if(!scrollUp){
 		setTimeout(function(){
 	
-			this.animationRunning = true;
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			if(!currentTranslate){
 				currentTranslate = 0;
 			}
 			var newHeight = currentTranslate + offsetHeight;
-			scrollItem.style.transform = "translateY(" + newHeight + "px)";	
-			this.animationRunning = false;
+			console.log("row diff ", rowDifference);
+			scrollItem.style.transform = "translateY(" + (newHeight - rowDifference) + "px)";				
+			
 		}.bind(this),1000 / i);
 	}
 	else if(scrollUp){
 		setTimeout(function(){
-			this.animationRunning = true;
+			
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			var newHeight = currentTranslate - offsetHeight;
 			//console.log(scrollItem.style.transform.match(/\d+/g));
 			scrollItem.style.transform = "translateY(" + newHeight + "px)";
-			console.log(i,newHeight,scrollItem,currentTranslate,offsetHeight);
-			this.animationRunning = false;
+			//console.log(i,newHeight,scrollItem,currentTranslate,offsetHeight);
+			
 		}.bind(this),1500 / i);
 	}
 	
 }
 //right will increment the active arrow by 1 until it reaches the max of row arrow
 ScrollComponent.prototype.rightButtonClicked = function(event){
-	console.log("Right button:", event.target);
+	//console.log("Right button:", event.target);
 	var scrollComponent = event.target.previousElementSibling;
 	var scrollID = scrollComponent.dataset.scrollcomponentid;
-	console.log(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight,this.scrollArray[scrollID][1][0])
+	//console.log(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight,this.scrollArray[scrollID][1][0])
 	
 	//this.initViewHeights();
 	if(this.activeItemIndexesArray[scrollID] < (this.scrollArray[scrollID].length - 1)){
 		var rowScrollHeight = this.scrollArray[scrollID][0][0].scrollHeight + 5;
-		this.resizeScrollView(scrollID,(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] + 1][0].scrollHeight),this.activeItemIndexesArray[scrollID] + 1);
+		this.adjustHiddenOffsets(scrollID,(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] + 1][0].scrollHeight),this.activeItemIndexesArray[scrollID] + 1);
+		var activeRow = this.activeItemIndexesArray[scrollID] + 1;
+		var rowDifference = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] + 1][0].scrollHeight;
+
+		var adjustedRowDiff;
+		if(rowDifference < 0){
+			adjustedRowDiff = rowDifference + activeRow * 5;
+		}
+		else{
+			adjustedRowDiff = rowDifference - activeRow * 5;
+		}
+		//bring current row down
 		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
 			//console.log(i - 1);
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
-			this.handleTimeoutRight(i,scrollItem,rowScrollHeight);
+			this.handleTimeoutRight(i,scrollItem,rowScrollHeight,false,adjustedRowDiff);
 		}
 		this.activeItemIndexesArray[scrollID] += 1;
+		//bring next row up
 		for(var i = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i > 0; i--){
 			
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i - 1];
@@ -180,7 +195,7 @@ ScrollComponent.prototype.initLeftArrowButtons = function(buttons){
 	
 }
 
-ScrollComponent.prototype.handleTimeoutLeft = function(i,scrollItem,offsetHeight,scrollUp){
+ScrollComponent.prototype.handleTimeoutLeft = function(i,scrollItem,offsetHeight,scrollUp,rowDifference){
 	if(offsetHeight === undefined){
 		offsetHeight =false;
 	}
@@ -191,24 +206,20 @@ ScrollComponent.prototype.handleTimeoutLeft = function(i,scrollItem,offsetHeight
 	if(!scrollUp){
 		setTimeout(function(){
 		//console.log(scrollItem);
-		this.animationRunning = true;
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			if(!currentTranslate){
 				currentTranslate = 0;
 			}
 			var newHeight = currentTranslate + offsetHeight;
-			scrollItem.style.transform = "translateY(" + newHeight + "px)";		
-			this.animationRunning = false;
+			scrollItem.style.transform = "translateY(" + (newHeight) + "px)";		
 		}.bind(this),200 * i);
 	}
 	else if(scrollUp){
 		setTimeout(function(){
-			this.animationRunning = true;
 			var currentTranslate = parseInt(scrollItem.style.transform.match(/-?\d+/g));
 			var newHeight = currentTranslate - offsetHeight;			
-			scrollItem.style.transform = "translateY(" + newHeight + "px)";
-			//console.log(i,newHeight,scrollItem,currentTranslate,offsetHeight);
-			this.animationRunning = false;
+			scrollItem.style.transform = "translateY(" + (newHeight + rowDifference) + "px)";
+			console.log("row diff left:",rowDifference);
 		}.bind(this),500 * i);
 	}
 	
@@ -219,26 +230,39 @@ ScrollComponent.prototype.leftButtonClicked = function(event){
 	console.log("Left button:", event.target);
 	var scrollComponent = event.target.nextElementSibling;
 	var scrollID = scrollComponent.dataset.scrollcomponentid;
-	console.log("left scroll ",this.activeItemIndexesArray,scrollID);
+	//console.log("left scroll ",this.activeItemIndexesArray,scrollID);
 	
 	if(this.activeItemIndexesArray[scrollID] > 0){
 		var rowScrollHeight = this.scrollArray[scrollID][0][0].scrollHeight + 5;
-		this.resizeScrollView(scrollID,(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] - 1][0].scrollHeight),this.activeItemIndexesArray[scrollID] - 1,true);
+		this.adjustHiddenOffsets(scrollID,(this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID] - 1][0].scrollHeight),this.activeItemIndexesArray[scrollID] - 1,true);
+
+		var activeRow = this.activeItemIndexesArray[scrollID] - 1;
+
+		var rowDifference = this.scrollArray[scrollID][activeRow][0].scrollHeight - this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][0].scrollHeight;
+		activeRow++;
+		var adjustedRowDiff;
+		if(rowDifference < 0){
+			adjustedRowDiff = rowDifference + activeRow * 5;
+			//console.log(adjustedRowDiff);
+		}
+		else{
+			adjustedRowDiff = rowDifference - activeRow * 5;
+		}
 		//active row
 		for(var i = 0;i < this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length;i++){
 
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i];
-			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight);
+			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight,false,adjustedRowDiff);
 		}
 		this.activeItemIndexesArray[scrollID] -= 1;
 		//previous row
 		for(var i = 0;i < this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]].length; i++){
 
 			var scrollItem = this.scrollArray[scrollID][this.activeItemIndexesArray[scrollID]][i];
-			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight,true);			
+			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight,true,adjustedRowDiff);			
 		}
 		this.initViewHeights();
-		//this.resizeScrollView(scrollID);
+		//this.adjustHiddenOffsets(scrollID);
 	}
 }
 //need to find active slide then resize based off that size
