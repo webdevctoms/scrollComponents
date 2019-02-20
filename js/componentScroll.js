@@ -101,7 +101,7 @@ ScrollComponent.prototype.adjustHiddenOffsets = function(scrollID,activeRow,adju
 
 	for(var i = 0;i < this.scrollArray[scrollID].length;i++){
 		//don't want to target current row or previous row when right clicked
-		console.log(activeRow);
+		//console.log(activeRow);
 		if(i === activeRow || i === activeRow - 1){
 			continue;
 		}
@@ -129,6 +129,18 @@ ScrollComponent.prototype.setAnimationStopped = function(){
 	this.animationRunning = false;
 }
 */
+
+ScrollComponent.prototype.getScrollHeight = function(bundleId){
+	var totalHeight = 0;
+	for(var i = 0; i < this.scrollComponents.length;i++){
+		if(this.scrollComponents[i].dataset.bundleid === bundleId){
+			console.log(parseInt(this.scrollComponents[i].style.height.replace("px","")));
+			totalHeight += parseInt(this.scrollComponents[i].style.height.replace("px","")) + 5;
+		}
+	}
+	return totalHeight;
+}
+
 ScrollComponent.prototype.handleTimeoutRight = function(i,scrollItem,offsetHeight,scrollUp,rowDifference){
 	if(offsetHeight === undefined){
 		offsetHeight =false;
@@ -202,7 +214,11 @@ ScrollComponent.prototype.rightButtonClicked = function(event){
 		}
 		
 		this.initViewHeights();
+		var bundleHeight = this.getScrollHeight(scrollComponent.dataset.bundleid);
+		this.dropdown.windowResized(false,bundleHeight,scrollComponent.dataset.bundleid);
+
 		//this.setHiddenToSecondRow();
+		
 		
 	}
 	
@@ -288,7 +304,8 @@ ScrollComponent.prototype.leftButtonClicked = function(event){
 			this.handleTimeoutLeft(i,scrollItem,rowScrollHeight,true,adjustedRowDiff);			
 		}
 		this.initViewHeights();
-		//this.adjustHiddenOffsets(scrollID);
+		var bundleHeight = this.getScrollHeight(scrollComponent.dataset.bundleid);
+		this.dropdown.windowResized(false,bundleHeight,scrollComponent.dataset.bundleid);
 	}
 }
 //need to find active slide then resize based off that size

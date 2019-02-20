@@ -163,8 +163,20 @@ kitBuilder.prototype.minusClicked = function(event){
 	}
 }
 //handle resize event by setting height of open dropdowns to auto so that content is not cut off,then recaclulate the heights of the dropdowns then assign the auto height as the current height, need to do this to keep the closing animation effect
-kitBuilder.prototype.windowResized = function(event){
+kitBuilder.prototype.windowResized = function(event,bundleHeight,bundleId){
+	if(bundleHeight === undefined){
+		bundleHeight = false;
+	}
+	if(bundleId === undefined){
+		bundleId = false;
+	}
 
+	if(bundleId && bundleHeight){
+		console.log("bundle height",bundleHeight);
+		this.bundleContentElements[bundleId].style.height = bundleHeight +"px";
+
+		return;
+	}
 	//set heights to auto that are open
 	for(var i =0; i < this.bundleContentElements.length;i++){
 		
