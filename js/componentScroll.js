@@ -20,15 +20,20 @@ function ScrollComponent(scrollComponentClass,leftArrowClass,rightArrowClass,dro
 }
 
 ScrollComponent.prototype.initScrollArray = function(columns){
+	//console.log(this.scrollComponents[0].children.length);
 	for(var i = 0;i < this.scrollComponents.length;i++){
 		var scrollData = [];
 		var columnArray = [];
+		var tempColumns = columns;
+		if(this.scrollComponents[i].children.length < columns){
+			tempColumns = this.scrollComponents[0].children.length
+		}
 		for(var k = 0;k <= this.scrollComponents[i].children.length;k++){
 			//console.log(columnArray,columnArray.length,k);
-			if(columnArray.length < columns){
+			if(columnArray.length < tempColumns){
 				columnArray.push(this.scrollComponents[i].children[k]);
 			}
-			else if(columnArray.length === columns){
+			else if(columnArray.length === tempColumns){
 				//
 				scrollData.push(columnArray);
 				columnArray = [];

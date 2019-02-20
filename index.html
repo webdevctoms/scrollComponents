@@ -29,56 +29,31 @@
 		<!--this will contain the buttons/quantities this is targeted by js to show and hide content-->
 		<div class="bundle-selector-content" id="bundle-selector-content-1">
 			<!--this just holds the table for each row, could possibly redo this section as one big table instead of a div and table for a single row-->
-			<div class="componenContainer">
-				<table class="kitTable">
-					<tbody>
-						<tr>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td>
-								<label class="componentLabel">TRACE™ Rope: (6 mm x 16 m / Single Pattern Sheath)</label>
-							</td>
-							<td class="priceColumn">
-								<p class="price">$50.00</p>
-							</td>
-							<td>
-								<div class="quantityContainer">
-									<img class="controlIcon minusIcon" src="icons/subtract.png" data-minusId="0" >
-									<label class="numberCounter" id="rope1">0</label>
-									<img class="controlIcon plusIcon" src="icons/add.png" data-plusId="0">
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>			
-			</div>
-			<div class="componenContainer">
-				<table class="kitTable">
-					<tbody>
-						<tr>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td>
-								<label class="componentLabel">TRACE™ Rope: (6 mm x 10 m / Training Rope)</label>
-							</td>
-							<td class="priceColumn">
-								<p class="price">$50.00</p>
-							</td>
-							<td>
-								<div class="quantityContainer">
-									<img class="controlIcon minusIcon" src="icons/subtract.png" data-minusId="1">
-									<label class="numberCounter" id="rope2">0</label>
-									<img class="controlIcon plusIcon" src="icons/add.png" data-plusId="1">
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>			
+			<div class="scrollContainer">
+				<img class="scrollArrow scrollArrowLeft" src="icons/down-arrow.png"/>	
+				<div class="scrollComponents" data-scrollcomponentid="0" data-bundleid="0">
+					<div class="scrollItem" data-scrollitem="0">
+						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
+						<label>TRACE™ Rope: (6 mm x 16 m / Single Pattern Sheath)</label>
+						<p>$50.00</p>
+						<div class="quantityContainerScroll">
+							<img class="controlIcon minusIcon" src="icons/subtract.png">
+							<label class="numberCounter" id="rope2">0</label>
+							<img class="controlIcon plusIcon" src="icons/add.png">
+						</div>
+					</div>
+					<div class="scrollItem" data-scrollitem="1">
+						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
+						<label>TRACE™ Rope: (6 mm x 10 m / Training Rope)</label>
+						<p>$50.00</p>
+						<div class="quantityContainerScroll">
+							<img class="controlIcon minusIcon" src="icons/subtract.png">
+							<label class="numberCounter" id="rope2">0</label>
+							<img class="controlIcon plusIcon" src="icons/add.png">
+						</div>
+					</div>
+				</div>
+				<img class="scrollArrow scrollArrowRight" src="icons/down-arrow.png"/>	
 			</div>
 		</div>
 
@@ -88,53 +63,31 @@
 		</div>
 
 		<div class="bundle-selector-content" id="bundle-selector-content-2">
-			<div class="componenContainer">
-				<table class="kitTable">
-					<tbody>
-						<tr>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td>
-								<label class="componentLabel">Symmetrical Zipper Saddle Bag, Pouch - MultiCam©</label>
-							</td>
-							<td class="priceColumn">
-								<p class="price">$50.00</p>
-							</td>
-							<td>
-								<div class="quantityContainer">
-									<img class="controlIcon minusIcon" src="icons/subtract.png" data-minusId="2">
-									<label class="numberCounter" id="bag1">0</label>
-									<img class="controlIcon plusIcon" src="icons/add.png" data-plusId="2">
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="componenContainer">
-				<table class="kitTable">
-					<tbody>
-						<tr>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td>
-								<label class="componentLabel">Rope Bag, Flat- MultiCam©</label>
-							</td>
-							<td class="priceColumn">
-								<p class="price">$50.00</p>
-							</td>
-							<td>
-								<div class="quantityContainer">
-									<img class="controlIcon minusIcon" src="icons/subtract.png" data-minusId="3">
-									<label class="numberCounter" id="bag2">0</label>
-									<img class="controlIcon plusIcon" src="icons/add.png" data-plusId="3">
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>			
+			<div class="scrollContainer">
+				<img class="scrollArrow scrollArrowLeft" src="icons/down-arrow.png"/>	
+				<div class="scrollComponents" data-scrollcomponentid="1" data-bundleid="1">
+					<div class="scrollItem" data-scrollitem="0">
+						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
+						<label>Symmetrical Zipper Saddle Bag, Pouch - MultiCam©</label>
+						<p>$50.00</p>
+						<div class="quantityContainerScroll">
+							<img class="controlIcon minusIcon" src="icons/subtract.png">
+							<label class="numberCounter" id="rope2">0</label>
+							<img class="controlIcon plusIcon" src="icons/add.png">
+						</div>
+					</div>
+					<div class="scrollItem" data-scrollitem="1">
+						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
+						<label>	Rope Bag, Flat- MultiCam©</label>
+						<p>$50.00</p>
+						<div class="quantityContainerScroll">
+							<img class="controlIcon minusIcon" src="icons/subtract.png">
+							<label class="numberCounter" id="rope2">0</label>
+							<img class="controlIcon plusIcon" src="icons/add.png">
+						</div>
+					</div>
+				</div>
+				<img class="scrollArrow scrollArrowRight" src="icons/down-arrow.png"/>	
 			</div>
 		</div>
 		<div class="bundle-button" id="bundle-button3" data-bundleId="2">
@@ -143,150 +96,74 @@
 		</div>
 
 		<div class="bundle-selector-content" id="bundle-selector-content-3">
-			<div class="componenContainer">
-				<table class="kitTable">
-					<tbody>
-						<tr>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td>
-								<label class="componentLabel">TRACE™ Systems Online Basic Course</label>
-							</td>
-							<td class="priceColumn">
-								<p class="price">$50.00</p>
-							</td>
-							<td>
-								<div class="quantityContainer">
-									<img class="controlIcon minusIcon" src="icons/subtract.png" data-minusId="4">
-									<label class="numberCounter" id="acc1">0</label>
-									<img class="controlIcon plusIcon" src="icons/add.png" data-plusId="4">
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>		
-			</div>
-			<div class="componenContainer">
-				<table class="kitTable">
-					<tbody>
-						<tr>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td>
-								<label class="componentLabel">TRACE™ Rope Log Book</label>
-							</td>
-							<td class="priceColumn">
-								<p class="price">$50.00</p>
-							</td>
-							<td>
-								<div class="quantityContainer">
-									<img class="controlIcon minusIcon" src="icons/subtract.png" data-minusId="5">
-									<label class="numberCounter" id="acc2">0</label>
-									<img class="controlIcon plusIcon" src="icons/add.png" data-plusId="5">
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="componenContainer">
-				<table class="kitTable">
-					<tbody>
-						<tr>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td>
-								<label class="componentLabel">Quickie Descender™, Decent Control Device</label>
-							</td>
-							<td class="priceColumn">
-								<p class="price">$50.00</p>
-							</td>
-							<td>
-								<div class="quantityContainer">
-									<img class="controlIcon minusIcon" src="icons/subtract.png" data-minusId="6">
-									<label class="numberCounter" id="acc3">0</label>
-									<img class="controlIcon plusIcon" src="icons/add.png" data-plusId="6">
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="componenContainer">
-				<table class="kitTable">
-					<tbody>
-						<tr>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td>
-								<label class="componentLabel">Carabiner: Phantom Screw Gate - Matte Grey</label>
-							</td>
-							<td class="priceColumn">
-								<p class="price">$50.00</p>
-							</td>
-							<td>
-								<div class="quantityContainer">
-									<img class="controlIcon minusIcon" src="icons/subtract.png" data-minusId="7">
-									<label class="numberCounter" id="acc4">0</label>
-									<img class="controlIcon plusIcon" src="icons/add.png" data-plusId="7">
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="componenContainer">
-				<table class="kitTable">
-					<tbody>
-						<tr>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td>
-								<label class="componentLabel">Dynatec Sling: (8 mm x 180 cm / Black)</label>
-							</td>
-							<td class="priceColumn">
-								<p class="price">$50.00</p>
-							</td>
-							<td>
-								<div class="quantityContainer">
-					<img class="controlIcon minusIcon" src="icons/subtract.png" data-minusId="8">
-					<label class="numberCounter" id="acc5">0</label>
-					<img class="controlIcon plusIcon" src="icons/add.png" data-plusId="8">
+
+			<div class="scrollContainer">
+				<img class="scrollArrow scrollArrowLeft" src="icons/down-arrow.png"/>	
+				<div class="scrollComponents" data-scrollcomponentid="2" data-bundleid="2">
+					<div class="scrollItem" data-scrollitem="0">
+						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
+						<label>TRACE™ Systems Online Basic Course</label>
+						<p>$50.00</p>
+						<div class="quantityContainerScroll">
+							<img class="controlIcon minusIcon" src="icons/subtract.png">
+							<label class="numberCounter" id="rope2">0</label>
+							<img class="controlIcon plusIcon" src="icons/add.png">
+						</div>
+					</div>
+					<div class="scrollItem" data-scrollitem="1">
+						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
+						<label>TRACE™ Rope Log Book</label>
+						<p>$50.00</p>
+						<div class="quantityContainerScroll">
+							<img class="controlIcon minusIcon" src="icons/subtract.png">
+							<label class="numberCounter" id="rope2">0</label>
+							<img class="controlIcon plusIcon" src="icons/add.png">
+						</div>
+					</div>
+					<div class="scrollItem" data-scrollitem="2">
+						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
+						<label>Quickie Descender™, Decent Control Device</label>
+						<p>$50.00</p>
+						<div class="quantityContainerScroll">
+							<img class="controlIcon minusIcon" src="icons/subtract.png">
+							<label class="numberCounter" id="rope2">0</label>
+							<img class="controlIcon plusIcon" src="icons/add.png">
+						</div>
+					</div>
+					<div class="scrollItem" data-scrollitem="1">
+						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
+						<label>Carabiner: Phantom Screw Gate - Matte Grey</label>
+						<p>$50.00</p>
+						<div class="quantityContainerScroll">
+							<img class="controlIcon minusIcon" src="icons/subtract.png">
+							<label class="numberCounter" id="rope2">0</label>
+							<img class="controlIcon plusIcon" src="icons/add.png">
+						</div>
+					</div>
+					<div class="scrollItem" data-scrollitem="1">
+						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
+						<label>Dynatec Sling: (8 mm x 180 cm / Black)</label>
+						<p>$50.00</p>
+						<div class="quantityContainerScroll">
+							<img class="controlIcon minusIcon" src="icons/subtract.png">
+							<label class="numberCounter" id="rope2">0</label>
+							<img class="controlIcon plusIcon" src="icons/add.png">
+						</div>
+					</div>
+					<div class="scrollItem" data-scrollitem="1">
+						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
+						<label>Tubular Nylon (1" x 12") Rope Protection, Coyote Brown</label>
+						<p>$50.00</p>
+						<div class="quantityContainerScroll">
+							<img class="controlIcon minusIcon" src="icons/subtract.png">
+							<label class="numberCounter" id="rope2">0</label>
+							<img class="controlIcon plusIcon" src="icons/add.png">
+						</div>
+					</div>
 				</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="componenContainer">
-				<table class="kitTable">
-					<tbody>
-						<tr>
-							<td class="imageColumn">
-								<img class="componentImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
-							</td>
-							<td>
-								<label class="componentLabel">Tubular Nylon (1" x 12") Rope Protection, Coyote Brown</label>
-							</td>
-							<td class="priceColumn">
-								<p class="price">$50.00</p>
-							</td>
-							<td>
-								<div class="quantityContainer">
-									<img class="controlIcon minusIcon" src="icons/subtract.png" data-minusId="9">
-									<label class="numberCounter" id="acc6">0</label>
-									<img class="controlIcon plusIcon" src="icons/add.png" data-plusId="9">
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>		
-			</div>
+				<img class="scrollArrow scrollArrowRight" src="icons/down-arrow.png"/>	
+			</div>			
+
 		</div>
 		<div class="bundle-button" id="bundle-button4" data-bundleId="3">
 			<p>Scrolls</p>
@@ -296,7 +173,7 @@
 		<div class="bundle-selector-content" id="bundle-selector-content-4">
 			<div class="scrollContainer">
 				<img class="scrollArrow scrollArrowLeft" src="icons/down-arrow.png"/>
-				<div class="scrollComponents" data-scrollcomponentid="0" data-bundleId="3">
+				<div class="scrollComponents" data-scrollcomponentid="3" data-bundleId="3">
 					<div class="scrollItem" data-scrollitem="0">
 						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
 						<label>TRACE™ Rope: (6 mm x 16 m / Single Pattern Sheath)</label>
@@ -423,7 +300,7 @@
 			</div>
 			<div class="scrollContainer">
 				<img class="scrollArrow scrollArrowLeft" src="icons/down-arrow.png"/>
-				<div class="scrollComponents" data-scrollcomponentid="1" data-bundleId="3">
+				<div class="scrollComponents" data-scrollcomponentid="4" data-bundleId="3">
 					<div class="scrollItem" data-scrollitem="0">
 						<img class="scrollImage" src="https://system.na1.netsuite.com/core/media/media.nl?id=213480&c=3760720&h=b90f07bb6c2b9b775c37"/>
 						<label>item 6</label>
